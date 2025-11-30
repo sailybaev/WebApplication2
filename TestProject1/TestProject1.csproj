@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WebApplication2\WebApplication2.csproj" />
+        <ProjectReference Include="..\WebApplication2\WebApplication2.csproj" />
     </ItemGroup>
+
+    <!-- Add this target to copy the deps.json file -->
+    <Target Name="CopyDepsFiles" AfterTargets="Build">
+        <Copy SourceFiles="$(OutDir)WebApplication2.deps.json"
+              DestinationFiles="$(OutDir)testhost.deps.json"
+              Condition="Exists('$(OutDir)WebApplication2.deps.json')" />
+    </Target>
 
 </Project>

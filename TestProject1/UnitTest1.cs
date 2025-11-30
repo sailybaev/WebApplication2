@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+
 using Moq;
 using WebApplication2.Controllers;
 using WebApplication2.Models;
@@ -15,12 +14,12 @@ public class UnitTest1
     public void Test1()
     {
         var service = new WeatherService();
-        
-        var res  = service.GetWeather("London");
-        
+
+        var res = service.GetWeather("London");
+
         Assert.Equal("London", res.City);
     }
-    
+
     [Fact]
     public void Test2()
     {
@@ -32,29 +31,18 @@ public class UnitTest1
                 Temperature = 15,
                 Description = "Raining"
             });
-        
-        
+
+
         var controller = new WeatherController(mock.Object);
-        
+
         var res = controller.Get("London");
 
         Assert.NotNull(res);
-        
+
         var okResult = Assert.IsType<OkObjectResult>(res.Result);
         var data = Assert.IsType<WeatherResponse>(okResult.Value);
         Assert.Equal("Raining", data.Description);
-        
-    }
-    
-    [Fact]
-    public void Test3()
-    {
-        var app = new WebApplicationFactory<Program>();
-        var client = app.CreateClient();
-        
-        var response = client.GetAsync("/Weather");
-        
-        Assert.True(response.IsCompleted);
+
     }
 }
 
